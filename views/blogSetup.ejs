@@ -22,8 +22,14 @@
                       type="text"
                       class="form-control"
                       name="blog_title"
+                      value="<%= typeof formData !== 'undefined' ? formData.blog_title : '' %>"
                       placeholder="Enter Blog Title"
                     />
+                    <% if (errors && errors.blog_title) { %>
+                    <div class="invalid-feedback d-block">
+                      <%= errors.blog_title%>
+                    </div>
+                    <% } %>
                   </div>
                 </div>
 
@@ -33,8 +39,14 @@
                       type="text"
                       class="form-control"
                       name="description"
+                      value="<%= typeof formData !== 'undefined' ? formData.description: '' %>"
                       placeholder="Enter Description"
                     ></textarea>
+                    <% if (errors && errors.description) { %>
+                    <div class="invalid-feedback d-block">
+                      <%= errors.description %>
+                    </div>
+                    <% } %>
                   </div>
                 </div>
                 <div class="d-flex flex-row align-items-center mb-4">
@@ -43,8 +55,14 @@
                       type="text"
                       class="form-control"
                       name="name"
+                      value="<%= typeof formData !== 'undefined' ? formData.name : '' %>"
                       placeholder="Enter Admin Name"
                     />
+                    <% if (errors && errors.name) { %>
+                    <div class="invalid-feedback d-block">
+                      <%= errors.name%>
+                    </div>
+                    <% } %>
                   </div>
                 </div>
 
@@ -54,8 +72,14 @@
                       type="text"
                       class="form-control"
                       name="email"
+                      value="<%= typeof formData !== 'undefined' ? formData.email : '' %>"
                       placeholder="Enter Email"
                     />
+                    <% if (errors && errors.email){ %>
+                    <div class="invalid-feedback d-block">
+                      <%= errors.email%>
+                    </div>
+                    <% } %>
                   </div>
                 </div>
 
@@ -65,14 +89,30 @@
                       type="password"
                       class="form-control"
                       name="password"
+                      value="<%= typeof formData !== 'undefined' ? formData.password : '' %>"
                       placeholder="Enter Password"
                     />
+                    <% if (errors && errors.password) { %>
+                    <div class="invalid-feedback d-block">
+                      <%= errors.password%>
+                    </div>
+                    <% } %>
                   </div>
                 </div>
 
                 <div class="d-flex flex-row align-items-center mb-4">
                   <div class="form-outline flex-fill mb-0">
-                    <input type="file" class="form-control" name="blog_image" />
+                    <input
+                      type="file"
+                      class="form-control"
+                      name="blog_image"
+                      value="<%= typeof formData !== 'undefined' ? formData.firstName : '' %> "
+                    />
+                    <% if (errors && errors.blog_image) { %>
+                    <div class="invalid-feedback d-block">
+                      <%= errors.blog_image%>
+                    </div>
+                    <% } %>
                   </div>
                 </div>
 

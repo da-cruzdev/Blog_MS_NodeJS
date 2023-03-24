@@ -2,6 +2,8 @@ require("dotenv").config();
 const express = require("express");
 const connectDB = require("./server/config/db");
 const isBlog = require("./server/middlewares/isBlog");
+const flash = require("connect-flash");
+const session = require("express-session");
 
 const app = express();
 
@@ -10,6 +12,17 @@ const localhost = process.env.localhost;
 
 connectDB();
 app.use(isBlog);
+app.use(flash());
+app.use(
+  session({
+    secret: "my secret key",
+    saveUninitialized: true,
+    resave: false,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+    },
+  })
+);
 
 const adminRoute = require("./server/routes/adminRoute");
 app.use("/", adminRoute);
