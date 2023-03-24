@@ -34,13 +34,12 @@ const CreateblogSetup = async (req, res) => {
     const { error, value } = validation.validate(req.body, {
       abortEarly: false,
     });
-    console.log(req.body);
     if (error) {
       const errorsObjects = error.details.reduce((acc, current) => {
         acc[current.context.key] = current.message;
         return acc;
       }, {});
-      console.log(errorsObjects.blog_logo);
+      //   console.log(errorsObjects);
       req.flash("errors", errorsObjects);
       req.flash("formData", req.body);
       const formData = req.flash("formData")[0];
@@ -64,7 +63,6 @@ const CreateblogSetup = async (req, res) => {
         password: password,
         isAdmin: 1,
       });
-      console.log(req.body);
       await blogSetting.save();
 
       const userAdmin = await user.save();

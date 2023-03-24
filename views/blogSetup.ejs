@@ -39,9 +39,10 @@
                       type="text"
                       class="form-control"
                       name="description"
-                      value="<%= typeof formData !== 'undefined' ? formData.description: '' %>"
                       placeholder="Enter Description"
-                    ></textarea>
+                    >
+<%= typeof formData !== 'undefined' ? formData.description: '' %></textarea
+                    >
                     <% if (errors && errors.description) { %>
                     <div class="invalid-feedback d-block">
                       <%= errors.description %>
@@ -102,12 +103,7 @@
 
                 <div class="d-flex flex-row align-items-center mb-4">
                   <div class="form-outline flex-fill mb-0">
-                    <input
-                      type="file"
-                      class="form-control"
-                      name="blog_image"
-                      value="<%= typeof formData !== 'undefined' ? formData.firstName : '' %> "
-                    />
+                    <input type="file" class="form-control" name="blog_image" />
                     <% if (errors && errors.blog_image) { %>
                     <div class="invalid-feedback d-block">
                       <%= errors.blog_image%>
