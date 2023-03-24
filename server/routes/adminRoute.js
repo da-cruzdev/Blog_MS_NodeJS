@@ -28,7 +28,7 @@ const upload = multer({ storage: storage });
 
 adminRoute.use(express.static("public"));
 
-adminRoute.get("/login", adminController.login);
+// adminRoute.get("/login", adminController.login);
 adminRoute.get("/blog-setup", adminController.blogSetup);
 adminRoute.post(
   "/blog-setup",

@@ -27,6 +27,9 @@ app.use(
 const adminRoute = require("./server/routes/adminRoute");
 app.use("/", adminRoute);
 
+const userRoute = require("./server/routes/userRoute");
+app.use("/", userRoute);
+
 app.listen(port, () => {
   console.log(`App listenning on port ${localhost}:${port}`);
 });
