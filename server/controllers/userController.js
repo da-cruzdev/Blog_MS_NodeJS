@@ -44,8 +44,18 @@ const profile = async (req, res) => {
   }
 };
 
+const userLogout = async (req, res) => {
+  try {
+    req.session.destroy();
+    res.redirect("/login");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 module.exports = {
   userLogin,
   verifyLogin,
   profile,
+  userLogout,
 };

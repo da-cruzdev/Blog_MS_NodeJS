@@ -28,5 +28,6 @@ userRoute.use(express.static("public"));
 userRoute.get("/login", adminLoginAuth.isLogout, userController.userLogin);
 userRoute.post("/login", userController.verifyLogin);
 userRoute.get("/profile", userController.profile);
+userRoute.get("/logout", adminLoginAuth.isLogin, userController.userLogout);
 
 module.exports = userRoute;
