@@ -75,7 +75,7 @@ const CreateblogSetup = async (req, res) => {
 
 const adminDashboard = async (req, res) => {
   try {
-    res.send("Admin dash");
+    res.render("admin/dashboard");
   } catch (error) {
     console.log(error);
   }
