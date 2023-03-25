@@ -2,6 +2,7 @@ const BlogSeting = require("../models/blogSettingModel");
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const { validation } = require("../validators");
+const Post = require("../models/postModel");
 
 const securePassword = async (password) => {
   try {
@@ -81,4 +82,34 @@ const adminDashboard = async (req, res) => {
   }
 };
 
-module.exports = { blogSetup, CreateblogSetup, adminDashboard };
+const loadPost = async (req, res) => {
+  try {
+    res.render("admin/postDash");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const createPost = async (req, res) => {
+  try {
+    const post = new Post({
+      title: req.body.title,
+      content: req.body.content,
+    });
+    const newPost = await post.save();
+    req.flash("info", "Post created successfully");
+    const messages = await req.flash("info");
+    console.log(messages);
+    res.render("admin/postDash", { messages: messages });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+module.exports = {
+  blogSetup,
+  CreateblogSetup,
+  adminDashboard,
+  loadPost,
+  createPost,
+};

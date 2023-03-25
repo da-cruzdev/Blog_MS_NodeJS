@@ -54,5 +54,16 @@ adminRoute.get(
   adminLoginAuth.isLogin,
   adminController.adminDashboard
 );
+adminRoute.get(
+  "/create-post",
+  adminLoginAuth.isLogin,
+  adminController.loadPost
+);
+
+adminRoute.post(
+  "/create-post",
+  adminLoginAuth.isLogin,
+  adminController.createPost
+);
 
 module.exports = adminRoute;

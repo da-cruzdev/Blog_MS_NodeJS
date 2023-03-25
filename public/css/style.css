@@ -242,7 +242,7 @@ th {
 
 label {
   display: inline-block;
-  margin-bottom: 0.5rem;
+  font-size: 25px;
 }
 
 button {
@@ -2727,6 +2727,7 @@ fieldset:disabled a.btn {
   background-color: #007bff;
   border-color: #007bff;
 }
+
 .btn-primary:hover {
   color: #fff;
   background-color: #0069d9;
@@ -10853,6 +10854,7 @@ a[data-toggle="collapse"] {
 .btn.btn-primary {
   background: #2f89fc;
   border-color: #2f89fc;
+  margin: 15px;
 }
 .btn.btn-primary:hover,
 .btn.btn-primary:focus {
@@ -10862,39 +10864,4 @@ a[data-toggle="collapse"] {
 
 .footer p {
   color: rgba(255, 255, 255, 0.5);
-}
-
-.form-control {
-  height: 40px !important;
-  background: #fff;
-  color: #000;
-  font-size: 13px;
-  border-radius: 4px;
-  -webkit-box-shadow: none !important;
-  box-shadow: none !important;
-  border: transparent;
-}
-.form-control:focus,
-.form-control:active {
-  border-color: #000;
-}
-.form-control::-webkit-input-placeholder {
-  /* Chrome/Opera/Safari */
-  color: rgba(255, 255, 255, 0.5);
-}
-.form-control::-moz-placeholder {
-  /* Firefox 19+ */
-  color: rgba(255, 255, 255, 0.5);
-}
-.form-control:-ms-input-placeholder {
-  /* IE 10+ */
-  color: rgba(255, 255, 255, 0.5);
-}
-.form-control:-moz-placeholder {
-  /* Firefox 18- */
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.subscribe-form .form-control {
-  background: #4897fc;
 }

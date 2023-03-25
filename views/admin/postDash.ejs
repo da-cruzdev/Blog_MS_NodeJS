@@ -1,0 +1,54 @@
+<%- include('../layouts/admin-header.ejs') %>
+<div id="content" class="p-4 p-md-5 pt-5">
+  <h2 class="mb-4">Add post</h2>
+
+   <% if (typeof messages !== "undefined") { %>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <%= messages %>
+        <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+     </div>
+   <% } %>
+
+    
+  <div class="container">
+    <form action= "" method="post">
+        <div class="col">
+            <label for="title">Title</label>
+            <input
+              type="text"
+              class="form-control <%= errors && errors.title ? 'is-invalid' : '' %> <%= errors && errors.title ? 'is-invalid' : '' %>"
+              name="title"
+              value="<%= typeof formData !== 'undefined' ? formData.title : '' %>"
+              placeholder="Enter title"
+            />
+            <% if (errors && errors.title) { %>
+            <div class="invalid-feedback d-block"><%= errors.title %></div>
+            <% } %>
+          </div>
+          <div class="col">
+            <label for="content">Content</label>
+            <textarea
+              type="text"
+              class="form-control <%= errors && errors.content ? 'is-invalid' : '' %> <%= errors && errors.content ? 'is-invalid' : '' %>"
+              name="content"
+              rows="8"
+              value="<%= typeof formData !== 'undefined' ? formData.content : '' %>"
+              placeholder="Enter content"
+            ></textarea>
+            <% if (errors && errors.content) { %>
+            <div class="invalid-feedback d-block"><%= errors.content %></div>
+            <% } %>
+          </div>
+          <div class="form-group mb-4">
+            <button type="submit" class="btn btn-primary mt-9">Add Post</button>
+          </div>
+      </form>
+</div>
+</div>
+
+<%- include('../layouts/admin-footer.ejs') %></div>
