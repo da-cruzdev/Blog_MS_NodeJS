@@ -8,6 +8,7 @@ userRoute.use(bodyParser.json());
 userRoute.use(bodyParser.urlencoded({ extended: true }));
 
 const config = require("../config/config");
+const { adminLoginAuth } = require("../middlewares");
 
 userRoute.use(
   session({
@@ -24,7 +25,7 @@ userRoute.set("views", "./views");
 
 userRoute.use(express.static("public"));
 
-userRoute.get("/login", userController.userLogin);
+userRoute.get("/login", adminLoginAuth.isLogout, userController.userLogin);
 userRoute.post("/login", userController.verifyLogin);
 userRoute.get("/profile", userController.profile);
 

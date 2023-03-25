@@ -2,6 +2,8 @@ const express = require("express");
 const adminController = require("../controllers/adminController");
 const adminRoute = express();
 const bodyParser = require("body-parser");
+const session = require("express-session");
+const config = require("../config/config");
 
 adminRoute.use(bodyParser.json());
 adminRoute.use(bodyParser.urlencoded({ extended: true }));
@@ -9,8 +11,20 @@ adminRoute.use(bodyParser.urlencoded({ extended: true }));
 adminRoute.set("view engine", "ejs");
 adminRoute.set("views", "./views");
 
+adminRoute.use(
+  session({
+    secret: config.sessionSecret,
+    saveUninitialized: true,
+    resave: false,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+    },
+  })
+);
+
 const multer = require("multer");
 const path = require("path");
+const { adminLoginAuth } = require("../middlewares");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -35,6 +49,10 @@ adminRoute.post(
   upload.single("blog_image"),
   adminController.CreateblogSetup
 );
-adminRoute.get("/dashboard", adminController.adminDashboard);
+adminRoute.get(
+  "/dashboard",
+  adminLoginAuth.isLogin,
+  adminController.adminDashboard
+);
 
 module.exports = adminRoute;
