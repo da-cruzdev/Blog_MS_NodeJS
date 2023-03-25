@@ -1,7 +1,7 @@
 const BlogSeting = require("../models/blogSettingModel");
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
-const { validation } = require("../validators");
+const { validation, postValidator } = require("../validators");
 const Post = require("../models/postModel");
 
 const securePassword = async (password) => {
@@ -92,15 +92,26 @@ const loadPost = async (req, res) => {
 
 const createPost = async (req, res) => {
   try {
-    const post = new Post({
-      title: req.body.title,
-      content: req.body.content,
-    });
-    const newPost = await post.save();
-    req.flash("info", "Post created successfully");
-    const messages = await req.flash("info");
-    console.log(messages);
-    res.render("admin/postDash", { messages: messages });
+    const { error } = postValidator.validate(req.body, { abortEarly: false });
+    if (error) {
+      const errors = error.details.reduce((acc, current) => {
+        acc[current.context.key] = current.message;
+        return acc;
+      }, {});
+      req.flash("errors", errors);
+      req.flash("formData", req.body);
+      const formData = req.flash("formData")[0];
+      res.render("admin/postDash", { errors: errors, formData: formData });
+    } else {
+      const post = new Post({
+        title: req.body.title,
+        content: req.body.content,
+      });
+      const newPost = await post.save();
+      req.flash("info", "Post created successfully");
+      const messages = await req.flash("info");
+      res.render("admin/postDash", { messages: messages });
+    }
   } catch (error) {
     console.log(error.message);
   }

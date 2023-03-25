@@ -16,7 +16,7 @@
 
     
   <div class="container">
-    <form action= "" method="post">
+    <form action= "" method="post" novalidate>
         <div class="col">
             <label for="title">Title</label>
             <input
@@ -37,9 +37,8 @@
               class="form-control <%= errors && errors.content ? 'is-invalid' : '' %> <%= errors && errors.content ? 'is-invalid' : '' %>"
               name="content"
               rows="8"
-              value="<%= typeof formData !== 'undefined' ? formData.content : '' %>"
               placeholder="Enter content"
-            ></textarea>
+            ><%= typeof formData !== 'undefined' ? formData.content : '' %></textarea>
             <% if (errors && errors.content) { %>
             <div class="invalid-feedback d-block"><%= errors.content %></div>
             <% } %>
