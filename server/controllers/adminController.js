@@ -12,10 +12,6 @@ const securePassword = async (password) => {
   }
 };
 
-const login = async (req, res) => {
-  res.send("Login here");
-};
-
 const blogSetup = async (req, res) => {
   try {
     const blogSetting = await BlogSeting.find({});
@@ -76,4 +72,13 @@ const CreateblogSetup = async (req, res) => {
     console.log(error);
   }
 };
-module.exports = { login, blogSetup, CreateblogSetup };
+
+const adminDashboard = async (req, res) => {
+  try {
+    res.send("Admin dash");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = { blogSetup, CreateblogSetup, adminDashboard };

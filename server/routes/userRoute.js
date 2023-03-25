@@ -2,10 +2,23 @@ const express = require("express");
 const userRoute = express();
 const bodyParser = require("body-parser");
 const userController = require("../controllers/userController");
+const session = require("express-session");
 
 userRoute.use(bodyParser.json());
 userRoute.use(bodyParser.urlencoded({ extended: true }));
 
+const config = require("../config/config");
+
+userRoute.use(
+  session({
+    secret: config.sessionSecret,
+    saveUninitialized: true,
+    resave: false,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+    },
+  })
+);
 userRoute.set("view engine", "ejs");
 userRoute.set("views", "./views");
 

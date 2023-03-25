@@ -14,12 +14,14 @@ const verifyLogin = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
 
-    const userData = User.find({ email: email });
+    const userData = await User.findOne({ email: email });
 
     if (userData) {
       const passwordMatch = await bcrypt.compare(password, userData.password);
 
       if (passwordMatch) {
+        req.session.user_id = userData._id;
+        req.session.isAdmin = userData.isAdmin;
         if (userData.isAdmin == 1) {
           res.redirect("/dashboard");
         } else {

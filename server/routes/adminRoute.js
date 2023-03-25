@@ -35,5 +35,6 @@ adminRoute.post(
   upload.single("blog_image"),
   adminController.CreateblogSetup
 );
+adminRoute.get("/dashboard", adminController.adminDashboard);
 
 module.exports = adminRoute;

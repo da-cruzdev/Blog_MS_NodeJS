@@ -24,6 +24,11 @@ app.use(
   })
 );
 
+app.use((req, res, next) => {
+  res.locals.errors = req.flash("error");
+  next();
+});
+
 const adminRoute = require("./server/routes/adminRoute");
 app.use("/", adminRoute);
 
