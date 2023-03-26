@@ -35,6 +35,9 @@ app.use("/", adminRoute);
 const userRoute = require("./server/routes/userRoute");
 app.use("/", userRoute);
 
+const blogRoute = require("./server/routes/blogRoute");
+app.use("/", blogRoute);
+
 app.listen(port, () => {
   console.log(`App listenning on port ${localhost}:${port}`);
 });
