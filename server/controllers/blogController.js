@@ -9,6 +9,16 @@ const getBlog = async (req, res) => {
   }
 };
 
+const getBlogDetails = async (req, res) => {
+  try {
+    const post = await postModel.findOne({ _id: req.params.id });
+    res.render("post", { post: post });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 module.exports = {
   getBlog,
+  getBlogDetails,
 };
