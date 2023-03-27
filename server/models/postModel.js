@@ -10,6 +10,10 @@ const postSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    comments: {
+      type: Object,
+      default: {},
+    },
   },
   {
     timestamps: true,

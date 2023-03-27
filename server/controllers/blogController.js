@@ -18,7 +18,30 @@ const getBlogDetails = async (req, res) => {
   }
 };
 
+const addComment = async (req, res) => {
+  try {
+    let post_id = req.body.post_id;
+    let username = req.body.username;
+    let comment = req.body.comment;
+    console.log(comment);
+
+    await postModel.findByIdAndUpdate(
+      { _id: post_id },
+      {
+        $push: {
+          comments: { username: username, comment: comment },
+        },
+      }
+    );
+
+    res.status(200).send({ succes: true, msg: "Comment added" });
+  } catch (error) {
+    res.status(200).send({ succes: false, msg: error.message });
+  }
+};
+
 module.exports = {
   getBlog,
   getBlogDetails,
+  addComment,
 };
