@@ -1,5 +1,39 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
+const nodemailer = require("nodemailer");
+const randomstring = require("randomstring");
+const config = require("../config/config");
+
+const sendEmailForPassword = async (userName, email, token) => {
+  try {
+    const transport = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      requireTLS: true,
+      auth: {
+        user: config.emailUser,
+        pass: config.emailPassword,
+      },
+    });
+
+    const mailOptions = {
+      from: config.emailUser,
+      to: email,
+      subject: "Reset password",
+      html: `<p>Hii ${userName}, Please click here to <a href="http://127.0.0.1:4500/reset-password?token=${token}">Reset</a></p>`,
+    };
+    transport.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email has been sent:- ", info.response);
+      }
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
 const userLogin = async (req, res) => {
   try {
@@ -53,9 +87,43 @@ const userLogout = async (req, res) => {
   }
 };
 
+const forgetPass = async (req, res) => {
+  try {
+    res.render("forget-password");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const VerifyForgetPass = async (req, res) => {
+  try {
+    const email = req.body.email;
+
+    const user = User.findOne({ email: email });
+
+    let message = ""; // définir la variable message à une chaîne vide par défaut
+
+    if (user) {
+      const random = randomstring.generate();
+      await User.updateOne({ email: email }, { $set: { token: random } });
+
+      sendEmailForPassword(user.name, user.email, random);
+      message = "Please check your mail to reset your password";
+    } else {
+      message = "User email is incorrect !";
+    }
+
+    res.render("forget-password", { message: message });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 module.exports = {
   userLogin,
   verifyLogin,
   profile,
   userLogout,
+  forgetPass,
+  VerifyForgetPass,
 };
