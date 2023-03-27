@@ -92,10 +92,6 @@ const loadPost = async (req, res) => {
 
 const createPost = async (req, res) => {
   try {
-    //   let image = "";
-    //   if (req.body.image !== undefined) {
-    //     image = req.body.image;
-    //   }
     const { error } = postValidator.validate(req.body, { abortEarly: false });
     if (error) {
       const errors = error.details.reduce((acc, current) => {
@@ -107,7 +103,7 @@ const createPost = async (req, res) => {
       const formData = req.flash("formData")[0];
       res.render("admin/postDash", { errors: errors, formData: formData });
     } else {
-      let image = req.body.image || null;
+      let image = req.body.image || "";
       const post = new Post({
         title: req.body.title,
         content: req.body.content,
