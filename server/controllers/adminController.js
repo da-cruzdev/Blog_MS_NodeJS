@@ -92,6 +92,10 @@ const loadPost = async (req, res) => {
 
 const createPost = async (req, res) => {
   try {
+    //   let image = "";
+    //   if (req.body.image !== undefined) {
+    //     image = req.body.image;
+    //   }
     const { error } = postValidator.validate(req.body, { abortEarly: false });
     if (error) {
       const errors = error.details.reduce((acc, current) => {
@@ -103,9 +107,11 @@ const createPost = async (req, res) => {
       const formData = req.flash("formData")[0];
       res.render("admin/postDash", { errors: errors, formData: formData });
     } else {
+      let image = req.body.image || null;
       const post = new Post({
         title: req.body.title,
         content: req.body.content,
+        image: image,
       });
       const newPost = await post.save();
       req.flash("info", "Post created successfully");
@@ -117,10 +123,26 @@ const createPost = async (req, res) => {
   }
 };
 
+const uploadImage = async (req, res) => {
+  try {
+    let imagePath = "/images";
+    imagePath = imagePath + "/" + req.file.filename;
+
+    res.send({
+      success: true,
+      msg: "Post Image upload successfully",
+      path: imagePath,
+    });
+  } catch (error) {
+    res.send({ success: false, msg: error.message });
+  }
+};
+
 module.exports = {
   blogSetup,
   CreateblogSetup,
   adminDashboard,
   loadPost,
   createPost,
+  uploadImage,
 };

@@ -66,4 +66,11 @@ adminRoute.post(
   adminController.createPost
 );
 
+adminRoute.post(
+  "/upload-post-image",
+  upload.single("image"),
+  adminLoginAuth.isLogin,
+  adminController.uploadImage
+);
+
 module.exports = adminRoute;

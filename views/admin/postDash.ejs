@@ -30,6 +30,10 @@
             <div class="invalid-feedback d-block"><%= errors.title %></div>
             <% } %>
           </div>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#uploadModal">
+            Upload Image
+          </button>
+          <input type="hidden" name="image" id="image">
           <div class="col">
             <label for="content">Content</label>
             <textarea
@@ -49,5 +53,54 @@
       </form>
 </div>
 </div>
+<div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Upload</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form id="uploadForm">
+      <div class="modal-body">
+        <input type="file" name="image" id="" required>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Upload</button>
+      </div> 
+    </form>
+    </div>
+  </div>
+</div>
+
+
+<script>
+
+$(document).ready(function(){
+  $("#uploadForm").submit(function(event){
+    event.preventDefault()
+
+
+    $.ajax({
+      url: "/upload-post-image",
+      type: "POST",
+      data: new FormData(this),
+      contentType: false,
+      processData: false,
+      success: function(data){
+        if(data.success == true){
+          $("#image").val(data.path)
+          alert(data.msg)
+          $('#uploadModal').modal('hide' )
+        } else {
+          alert(data.msg)
+        }
+      }
+    })
+
+  })})
+
+</script>
 
 <%- include('../layouts/admin-footer.ejs') %></div>
