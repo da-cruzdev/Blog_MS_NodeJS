@@ -12,9 +12,9 @@ const validation = Joi.object({
     .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
     .trim()
     .required(),
-  blog_image: Joi.string()
-    .pattern(new RegExp(/.(jpg|jpeg|png|gif)$/i))
-    .required(),
+  // blog_image: Joi.string()
+  //   .regex(/(jpg|jpeg|png)$/i)
+  //   .required(),
 });
 
 module.exports = validation;

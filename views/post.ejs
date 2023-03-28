@@ -10,16 +10,24 @@
           <!-- Post title-->
           <h1 class="fw-bolder mb-1"><%= post.title %></h1>
           <!-- Post meta content-->
-          <div class="text-muted fst-italic mb-2">Posted by Admin</div>
+          <div class="text-muted fst-italic mb-2">
+            Posted on <%= new Date(post.createdAt).toUTCString() %> by Admin
+          </div>
         </header>
         <!-- Preview image figure-->
+        <% if (post.image !== undefined && post.image !== '') { %>
+
         <figure class="mb-4">
-          <img
-            class="img-fluid rounded"
-            src="https://dummyimage.com/900x400/ced4da/6c757d.jpg"
-            alt="..."
-          />
+          <img class="img-fluid rounded" src="<%= post.image %>" alt="..." />
         </figure>
+        <% } else { %>
+        <img
+          src="https://dummyimage.com/900x400/ced4da/6c757d.jpg"
+          alt="..."
+          class="img-fluid rounded mb-4 mb-lg-0"
+        />
+        <% } %>
+
         <!-- Post content-->
         <section class="mb-5">
           <p class="fs-5 mb-4"><%= post.content %></p>
