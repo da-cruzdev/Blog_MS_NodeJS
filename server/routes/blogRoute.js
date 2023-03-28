@@ -3,6 +3,7 @@ const {
   getBlog,
   getBlogDetails,
   addComment,
+  doReply,
 } = require("../controllers/blogController");
 const blogRoute = express();
 
@@ -15,5 +16,7 @@ blogRoute.get("/", getBlog);
 blogRoute.get("/post/:id", getBlogDetails);
 
 blogRoute.post("/add-comment", addComment);
+
+blogRoute.post("/do-reply", doReply);
 
 module.exports = blogRoute;

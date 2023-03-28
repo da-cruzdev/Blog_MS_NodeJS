@@ -1,4 +1,5 @@
 const postModel = require("../models/postModel");
+const { ObjectId } = require("mongodb");
 
 const getBlog = async (req, res) => {
   try {
@@ -24,11 +25,13 @@ const addComment = async (req, res) => {
     let username = req.body.username;
     let comment = req.body.comment;
 
+    let commentId = new ObjectId();
+
     await postModel.findByIdAndUpdate(
       { _id: post_id },
       {
         $push: {
-          comments: { username: username, comment: comment },
+          comments: { _id: commentId, username: username, comment: comment },
         },
       }
     );
@@ -39,8 +42,34 @@ const addComment = async (req, res) => {
   }
 };
 
+const doReply = async (req, res) => {
+  try {
+    let replyId = new ObjectId();
+
+    await postModel.updateOne(
+      {
+        _id: new ObjectId(req.body.post_id),
+        "comments._id": new ObjectId(req.body.comment_id),
+      },
+      {
+        $push: {
+          "comments.$.replies": {
+            _id: replyId,
+            name: req.body.name,
+            reply: req.body.reply,
+          },
+        },
+      }
+    );
+    res.status(200).send({ succes: true, msg: "Reply added !!" });
+  } catch (error) {
+    res.status(200).send({ succes: false, msg: error.message });
+  }
+};
+
 module.exports = {
   getBlog,
   getBlogDetails,
   addComment,
+  doReply,
 };
