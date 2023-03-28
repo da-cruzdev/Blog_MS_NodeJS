@@ -16,7 +16,7 @@
 
     
   <div class="container">
-    <form action= "" method="post" novalidate>
+    <form action= "" method="post" id="addPost">
         <div class="col">
             <label for="title">Title</label>
             <input
@@ -87,6 +87,7 @@ $(document).ready(function(){
       type: "POST",
       data: new FormData(this),
       contentType: false,
+      cache: false,
       processData: false,
       success: function(data){
         if(data.success == true){
@@ -99,7 +100,40 @@ $(document).ready(function(){
       }
     })
 
-  })})
+  })
+  $("#addPost").submit(function(event){
+    event.preventDefault()
+
+    let obj = $(this);
+    let formData = {};
+    $.each($(this).serializeArray(), function(i, field){
+      formData[field.name] = field.value
+    })
+
+    $.ajax({
+      url: "/create-post  ",
+      type: "POST",
+      data:  formData,
+      success: function(data){
+        if(data.success == true){
+          
+          alert(data.msg);
+          $(obj)[0].reset();
+          $("#image").val("");
+          formData._id = data._id;
+
+          let socket = io();
+          socket.emit("new_post", formData);
+
+        } else {
+          alert(data.msg)
+        }
+      }
+    })
+
+  })
+
+})
 
 </script>
 

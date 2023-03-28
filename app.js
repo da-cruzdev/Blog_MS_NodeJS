@@ -4,8 +4,13 @@ const connectDB = require("./server/config/db");
 const isBlog = require("./server/middlewares/isBlog");
 const flash = require("connect-flash");
 const session = require("express-session");
-
 const app = express();
+
+const http = require("http").createServer(app);
+
+const { Server } = require("socket.io");
+
+const io = new Server(http, {});
 
 const port = process.env.PORT || 3000;
 const localhost = process.env.localhost;
@@ -38,6 +43,18 @@ app.use("/", userRoute);
 const blogRoute = require("./server/routes/blogRoute");
 app.use("/", blogRoute);
 
-app.listen(port, () => {
+io.on("connection", (socket) => {
+  console.log("User connected");
+
+  socket.on("new_post", (formData) => {
+    socket.broadcast.emit("new_post", formData);
+  });
+});
+
+http.listen(port, () => {
   console.log(`App listenning on port ${localhost}:${port}`);
 });
+
+// app.listen(port, () => {
+//   console.log(`App listenning on port ${localhost}:${port}`);
+// });

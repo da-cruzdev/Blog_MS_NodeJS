@@ -113,10 +113,17 @@ const createPost = async (req, res) => {
       const newPost = await post.save();
       req.flash("info", "Post created successfully");
       const messages = await req.flash("info");
-      res.render("admin/postDash", { messages: messages });
+      res.send({
+        success: true,
+        msg: "Post created successfully",
+        _id: newPost._id,
+      });
     }
   } catch (error) {
-    console.log(error.message);
+    res.send({
+      success: false,
+      msg: error.message,
+    });
   }
 };
 
