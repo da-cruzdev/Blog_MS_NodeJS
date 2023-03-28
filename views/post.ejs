@@ -59,73 +59,75 @@
             </form>
             <p class="com-status" style="color: green"></p>
 
-            <% if (post.comments.length >=0) { %> <% post.comments =
-            post.comments.reverse(); post.comments.forEach(comment=> { %>
-            <div class="d-flex mt-3">
-              <div class="flex-shrink-0">
-                <img
-                  class="rounded-circle"
-                  src="https://dummyimage.com/50x50/ced4da/6c757d.jpg"
-                  alt="..."
-                />
-              </div>
-              <div class="ms-3">
-                <div class="fw-bold"><%= comment.username %></div>
-                <%= comment.comment %> <% if (comment.replies) { %> <%
-                comment.replies.forEach(reply=> { %>
-                <div class="d-flex mt-3">
-                  <div class="flex-shrink-0">
-                    <img
-                      class="rounded-circle"
-                      src="https://dummyimage.com/50x50/ced4da/6c757d.jpg"
-                      alt="..."
-                    />
-                  </div>
-                  <div class="ms-3">
-                    <div class="fw-bold"><%= reply.name %></div>
-                    <%= reply.reply %>
-                  </div>
+            <div id="comment-section">
+              <% if (post.comments.length >=0) { %> <% post.comments =
+              post.comments.reverse(); post.comments.forEach(comment=> { %>
+              <div class="d-flex mt-3">
+                <div class="flex-shrink-0">
+                  <img
+                    class="rounded-circle"
+                    src="https://dummyimage.com/50x50/ced4da/6c757d.jpg"
+                    alt="..."
+                  />
                 </div>
-                <% }) %> <% } %>
-
-                <div class="col-md-12">
-                  <form class="do-reply">
-                    <input
-                      type="hidden"
-                      name="post_id"
-                      value="<%= post._id %>"
-                    />
-                    <input
-                      type="hidden"
-                      name="comment_id"
-                      value="<%= comment._id %>"
-                    />
-
-                    <div class="form-group mt-2">
-                      <input
-                        type="text"
-                        name="name"
-                        class="form-control"
-                        placeholder="Enter Name"
-                        required
+                <div class="ms-3">
+                  <div class="fw-bold"><%= comment.username %></div>
+                  <%= comment.comment %> <% if (comment.replies) { %> <%
+                  comment.replies.forEach(reply=> { %>
+                  <div class="d-flex mt-3">
+                    <div class="flex-shrink-0">
+                      <img
+                        class="rounded-circle"
+                        src="https://dummyimage.com/50x50/ced4da/6c757d.jpg"
+                        alt="..."
                       />
                     </div>
-                    <div class="form-group mt-2">
-                      <textarea
-                        name="reply"
-                        class="form-control"
-                        placeholder="Enter Reply"
-                        required
-                      ></textarea>
+                    <div class="ms-3">
+                      <div class="fw-bold"><%= reply.name %></div>
+                      <%= reply.reply %>
                     </div>
-                    <button type="submit" class="btn btn-info btn-sm mt-2">
-                      Reply
-                    </button>
-                  </form>
+                  </div>
+                  <% }) %> <% } %>
+
+                  <div class="col-md-12">
+                    <form class="do-reply">
+                      <input
+                        type="hidden"
+                        name="post_id"
+                        value="<%= post._id %>"
+                      />
+                      <input
+                        type="hidden"
+                        name="comment_id"
+                        value="<%= comment._id %>"
+                      />
+
+                      <div class="form-group mt-2">
+                        <input
+                          type="text"
+                          name="name"
+                          class="form-control"
+                          placeholder="Enter Name"
+                          required
+                        />
+                      </div>
+                      <div class="form-group mt-2">
+                        <textarea
+                          name="reply"
+                          class="form-control"
+                          placeholder="Enter Reply"
+                          required
+                        ></textarea>
+                      </div>
+                      <button type="submit" class="btn btn-info btn-sm mt-2">
+                        Reply
+                      </button>
+                    </form>
+                  </div>
                 </div>
               </div>
+              <% }) %> <% } %>
             </div>
-            <% }) %> <% } %>
           </div>
         </div>
       </section>
@@ -155,17 +157,24 @@
 </div>
 
 <script>
+  let socket = io();
   $(document).ready(function () {
     $("#comment-form").submit(function (event) {
       event.preventDefault();
 
-      let formData = $(this).serialize();
+      let formData = {};
+      $.each($(this).serializeArray(), function (i, field) {
+        formData[field.name] = field.value;
+      });
 
       $.ajax({
         url: "/add-comment",
         type: "POST",
         data: formData,
         success: function (data) {
+          formData._id = data._id;
+          socket.emit("new_comment", formData);
+
           $(".com-status").text(data.msg);
           setTimeout(function () {
             $(".com-status").text("");
@@ -173,6 +182,27 @@
         },
       });
     });
+
+    socket.on("new_comment", function (comment) {
+      let html = "";
+      html += `
+        <div class="d-flex mt-3">
+          <div class="flex-shrink-0">
+            <img
+              class="rounded-circle"
+              src="https://dummyimage.com/50x50/ced4da/6c757d.jpg"
+              alt="..."
+            />
+          </div>
+          <div class="ms-3">
+            <div class="fw-bold">${comment.username}</div>
+            ${comment.comment}
+          </div>
+        </div>    
+      `;
+      $("#comment-section").prepend(html);
+    });
+
     $(".do-reply").submit(function (event) {
       event.preventDefault();
 

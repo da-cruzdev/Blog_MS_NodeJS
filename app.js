@@ -49,6 +49,10 @@ io.on("connection", (socket) => {
   socket.on("new_post", (formData) => {
     socket.broadcast.emit("new_post", formData);
   });
+
+  socket.on("new_comment", (comment) => {
+    io.emit("new_comment", comment);
+  });
 });
 
 http.listen(port, () => {

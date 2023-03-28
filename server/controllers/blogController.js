@@ -36,7 +36,9 @@ const addComment = async (req, res) => {
       }
     );
 
-    res.status(200).send({ succes: true, msg: "Comment added" });
+    res
+      .status(200)
+      .send({ succes: true, msg: "Comment added", _id: commentId });
   } catch (error) {
     res.status(200).send({ succes: false, msg: error.message });
   }
