@@ -76,7 +76,8 @@ const CreateblogSetup = async (req, res) => {
 
 const adminDashboard = async (req, res) => {
   try {
-    res.render("admin/dashboard");
+    const allPost = await Post.find({});
+    res.render("admin/dashboard", { posts: allPost });
   } catch (error) {
     console.log(error);
   }
