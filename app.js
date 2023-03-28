@@ -53,6 +53,10 @@ io.on("connection", (socket) => {
   socket.on("new_comment", (comment) => {
     io.emit("new_comment", comment);
   });
+
+  socket.on("new_reply", (reply) => {
+    io.emit("new_reply", reply);
+  });
 });
 
 http.listen(port, () => {

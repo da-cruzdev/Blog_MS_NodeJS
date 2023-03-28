@@ -63,7 +63,7 @@ const doReply = async (req, res) => {
         },
       }
     );
-    res.status(200).send({ succes: true, msg: "Reply added !!" });
+    res.status(200).send({ succes: true, msg: "Reply added !!", _id: replyId });
   } catch (error) {
     res.status(200).send({ succes: false, msg: error.message });
   }
