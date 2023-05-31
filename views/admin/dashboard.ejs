@@ -9,6 +9,7 @@
           <th>Title</th>
           <th>Content</th>
           <th>Image</th>
+          <th>Action</th>
         
         </tr>
       </thead>
@@ -19,6 +20,7 @@
           <td><%= post.title %></td>
           <td><%= post.content %></td>
           <td><img src="<%= post.image %>" width="100"></img></td>
+          <td><a href="#" class="btn btn-danger deletePost" data-id="<%= post._id %>">Delete</a></td>
         </tr>
         <% }) %>
         <% } else { %>
@@ -30,4 +32,33 @@
     </table>
   </div>
 </div>
+
+<script>
+  $(document).ready(function(){
+    $(".deletePost").click(function(){
+      let postId = $(this).attr("data-id");
+      let obj = $(this);
+
+
+
+      $.ajax({
+        url:"/delete-post",
+        type: "POST",
+        data: {id: postId},
+        success: function(response){
+          if(response.success == true){
+
+            $(obj).parent().parent().remove();
+
+            alert(response.msg)
+          }
+          else {
+            alert(response.msg)
+          }
+        }
+      })
+    })
+  })
+</script>
+
 <%- include('../layouts/admin-footer.ejs') %>

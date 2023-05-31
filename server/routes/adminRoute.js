@@ -73,4 +73,10 @@ adminRoute.post(
   adminController.uploadImage
 );
 
+adminRoute.post(
+  "/delete-post",
+  adminLoginAuth.isLogin,
+  adminController.deletePost
+);
+
 module.exports = adminRoute;

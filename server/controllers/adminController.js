@@ -142,11 +142,22 @@ const uploadImage = async (req, res) => {
   }
 };
 
+const deletePost = async (req, res) => {
+  try {
+    await Post.deleteOne({ _id: req.body.id });
+    res.status(200).send({ success: true, msg: "Post deleted successfully!" });
+  } catch (error) {
+    res.status(400).send({ success: false, msg: error.message });
+  }
+};
+
 module.exports = {
   blogSetup,
   CreateblogSetup,
   adminDashboard,
+  securePassword,
   loadPost,
   createPost,
   uploadImage,
+  deletePost,
 };
